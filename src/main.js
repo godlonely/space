@@ -2,10 +2,8 @@
 
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
-let playerImg;
 
-let playerX = 100;
-let playerY = 100;
+let player;
 
 function loadImage(url, cb) {
     let img = new Image();
@@ -21,7 +19,7 @@ function loadImage(url, cb) {
 
 function init() {
     loadImage('res/player-blue.png', (err, img) => {
-        playerImg = img;
+        player = new Player(img);
         animate();
     });
 }
@@ -33,13 +31,13 @@ function animate() {
 }
 
 function update() {
-    playerX += 2;
+    player.move(2, 0);
 }
 
 function draw() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(playerImg, playerX, playerY);
+    player.draw(ctx);
 }
 
 init();
