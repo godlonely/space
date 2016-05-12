@@ -6,6 +6,9 @@ let ctx = canvas.getContext('2d');
 let player;
 let lastFrameTime;
 
+let mouseX = 0;
+let mouseY = 0;
+
 function loadImage(url, cb) {
     let img = new Image();
     img.src = url;
@@ -21,9 +24,16 @@ function loadImage(url, cb) {
 function init() {
     loadImage('res/player-blue.png', (err, img) => {
         player = new Player(img);
+		player.setSize(img.width, img.height);
+		player.setPivot(0.5, 0.5);
         lastFrameTime = Date.now();
         animate();
     });
+
+	canvas.addEventListener('mousemove', (e) => {
+		mouseX = e.layerX;
+		mouseY = e.layerY;
+	});
 }
 
 function animate() {
@@ -36,8 +46,8 @@ function animate() {
 }
 
 function update(dt) {
-    let speed = 0.1;
-    player.move(dt*speed, 0);
+    // let speed = 0.1;
+    player.setPos(mouseX, mouseY);
 }
 
 function draw(ctx) {
