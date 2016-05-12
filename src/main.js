@@ -4,6 +4,7 @@ let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
 let player;
+let laser;
 let lastFrameTime;
 
 let mouseX = 0;
@@ -22,12 +23,20 @@ function loadImage(url, cb) {
 }
 
 function init() {
-    loadImage('res/player-blue.png', (err, img) => {
-        player = new Player(img);
-		player.setSize(img.width, img.height);
-		player.setPivot(0.5, 0.5);
-        lastFrameTime = Date.now();
-        animate();
+    loadImage('res/player-blue.png', (err, playerImg) => {
+		loadImage('res/laserRed06.png', (err, laserImg) => {
+			player = new Sprite(playerImg);
+			player.setSize(playerImg.width, playerImg.height);
+			player.setPivot(0.5, 0.5);
+			
+			laser = new Sprite(laserImg);
+			laser.setSize(laserImg.width, laserImg.height);
+			laser.setPos(50, 50);
+			laser.setPivot(0.5, 0);
+
+			lastFrameTime = Date.now();
+			animate();
+		})
     });
 
 	canvas.addEventListener('mousemove', (e) => {
@@ -53,7 +62,8 @@ function update(dt) {
 function draw(ctx) {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    player.draw(ctx);
+	laser.draw(ctx);
+	player.draw(ctx);
 }
 
 init();

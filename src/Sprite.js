@@ -1,6 +1,6 @@
 "use strict";
 
-class Player extends GameObject {
+class Sprite extends GameObject {
 
     constructor(img) {
         super(100, 100);
