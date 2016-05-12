@@ -14,30 +14,27 @@ let mouseY = 0;
 
 let mouseClicked = false;
 
-function loadImage(url, cb) {
-    let img = new Image();
-    img.src = url;
-    img.onload = () => {
-        cb(null, img);
-    };
-
-    img.onerror = (e) => {
-        cb(e);
-    }
-}
+let rm = new ResourceManager();
 
 function init() {
-    loadImage('res/player-blue.png', (err, playerImg) => {
-		loadImage('res/laserRed06.png', (err, laser) => {
-			laserImg = laser;
-			player = new Player(playerImg);
-			console.log(`${player.getName()} is ready for battle!!!`);
-			player.setPivot(0.5, 0.5);
 
-			lastFrameTime = Date.now();
-			animate();
-		})
-    });
+	rm.load({
+		'player': 'res/player-blue.png',
+		'laser': 'res/laserRed06.png',
+		'enemy': 'res/enemyRed1.png'
+	}, (err) => {
+		if (err) {
+			console.log(err);
+			return;
+		}
+
+		player = new Player(rm.getResource('player'));
+		console.log(`${player.getName()} is ready for battle!!!`);
+		player.setPivot(0.5, 0.5);
+
+		lastFrameTime = Date.now();
+		animate();
+	});
 
 	canvas.addEventListener('mousemove', (e) => {
 		mouseX = e.layerX;
@@ -69,7 +66,7 @@ function update(dt) {
 	if (mouseClicked) {
 		mouseClicked = false;
 
-		let laser = new Sprite(laserImg);
+		let laser = new Sprite(rm.getResource('laser'));
 		laser.setPos(50, 50);
 		laser.setPivot(0.5, 0);
 		lasers.push(laser);
