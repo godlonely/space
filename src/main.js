@@ -25,12 +25,11 @@ function loadImage(url, cb) {
 function init() {
     loadImage('res/player-blue.png', (err, playerImg) => {
 		loadImage('res/laserRed06.png', (err, laserImg) => {
-			player = new Sprite(playerImg);
-			player.setSize(playerImg.width, playerImg.height);
+			player = new Player(playerImg);
+			console.log(`${player.getName()} is ready for battle!!!`);
 			player.setPivot(0.5, 0.5);
 			
 			laser = new Sprite(laserImg);
-			laser.setSize(laserImg.width, laserImg.height);
 			laser.setPos(50, 50);
 			laser.setPivot(0.5, 0);
 

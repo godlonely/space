@@ -5,6 +5,7 @@ class Sprite extends GameObject {
     constructor(img) {
         super(100, 100);
         this._img = img;
+        this.setSize(img.width, img.height);
     }
 
     draw(ctx) {
