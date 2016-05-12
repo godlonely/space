@@ -19,7 +19,7 @@ let mouseClicked = false;
 let rm = new ResourceManager();
 
 let lastSpawnTime = 0;
-const ENEMY_DELAY = 2000;
+let nextEnemyDelay = 0;
 
 function init() {
 
@@ -92,8 +92,9 @@ function update(dt) {
 		enemy.move(0, enemySpeed*dt);
 	});
 
-	if (Date.now() - lastSpawnTime > ENEMY_DELAY) {
+	if (Date.now() - lastSpawnTime > nextEnemyDelay) {
 		lastSpawnTime = Date.now();
+		nextEnemyDelay = 1000 + Math.random()*1000;
 		spawnEnemy();
 	}
 
