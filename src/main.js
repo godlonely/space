@@ -5,6 +5,8 @@ let ctx = canvas.getContext('2d');
 
 let player;
 let lasers = [];
+let enemies = [];
+
 let lastFrameTime;
 
 let laserImg;
@@ -15,6 +17,9 @@ let mouseY = 0;
 let mouseClicked = false;
 
 let rm = new ResourceManager();
+
+let lastSpawnTime = 0;
+const ENEMY_DELAY = 2000;
 
 function init() {
 
@@ -60,6 +65,9 @@ function animate() {
  */
 function update(dt) {
     let laserSpeed = -0.5;
+	let enemySpeed = 0.3;
+
+
     player.setPos(mouseX, mouseY);
 	// laser.move(0, laserSpeed*dt);
 
@@ -80,6 +88,15 @@ function update(dt) {
 		laser.move(0, laserSpeed*dt);
 	});
 
+	enemies.forEach((enemy) => {
+		enemy.move(0, enemySpeed*dt);
+	});
+
+	if (Date.now() - lastSpawnTime > ENEMY_DELAY) {
+		lastSpawnTime = Date.now();
+		spawnEnemy();
+	}
+
 }
 
 function draw(ctx) {
@@ -90,7 +107,18 @@ function draw(ctx) {
 		laser.draw(ctx);
 	});
 
+	enemies.forEach((enemy) => {
+		enemy.draw(ctx);
+	});
+
 	player.draw(ctx);
+}
+
+function spawnEnemy() {
+	let enemy = new Sprite(rm.getResource('enemy'));
+	enemy.setPos(Math.floor(
+		Math.random()*(canvas.width - enemy.getSize().width)), -50);
+	enemies.push(enemy);
 }
 
 init();
