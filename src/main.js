@@ -10,6 +10,8 @@ let lastFrameTime;
 let mouseX = 0;
 let mouseY = 0;
 
+let mouseClicked = false;
+
 function loadImage(url, cb) {
     let img = new Image();
     img.src = url;
@@ -42,6 +44,10 @@ function init() {
 		mouseX = e.layerX;
 		mouseY = e.layerY;
 	});
+
+	canvas.addEventListener('mousedown', () => {
+		mouseClicked = true;
+	});
 }
 
 function animate() {
@@ -53,9 +59,20 @@ function animate() {
     draw(ctx);
 }
 
+/**
+ * @param dt delta time
+ */
 function update(dt) {
-    // let speed = 0.1;
+    let laserSpeed = -0.5;
     player.setPos(mouseX, mouseY);
+	laser.move(0, laserSpeed*dt);
+
+	if (mouseClicked) {
+		mouseClicked = false;
+		let pos = player.getPos();
+		laser.setPos(pos.x + player.getSize().width/2,
+			pos.y);
+	}
 }
 
 function draw(ctx) {
