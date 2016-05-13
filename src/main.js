@@ -3,13 +3,13 @@
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
 
+let input = new InputHandler(canvas);
+
 let player;
 let lasers = [];
 let enemies = [];
 
 let lastFrameTime;
-
-let laserImg;
 
 let mouseX = 0;
 let mouseY = 0;
@@ -20,6 +20,10 @@ let rm = new ResourceManager();
 
 let lastSpawnTime = 0;
 let nextEnemyDelay = 0;
+
+let currentScene = new MenuScene({
+	input
+});
 
 function init() {
 
@@ -41,14 +45,7 @@ function init() {
 		animate();
 	});
 
-	canvas.addEventListener('mousemove', (e) => {
-		mouseX = e.layerX;
-		mouseY = e.layerY;
-	});
-
-	canvas.addEventListener('mousedown', () => {
-		mouseClicked = true;
-	});
+	
 }
 
 function animate() {
@@ -56,14 +53,22 @@ function animate() {
     lastFrameTime = Date.now();
 
     requestAnimationFrame(animate);
-    update(dt);
-    draw(ctx);
+
+	clearScreen();
+	currentScene.update(dt);
+	currentScene.draw(ctx);
 }
+
+function clearScreen() {
+	ctx.fillStyle = 'black';
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 
 /**
  * @param dt delta time
  */
-function update(dt) {
+function updateGame(dt) {
     let laserSpeed = -0.5;
 	let enemySpeed = 0.3;
 
@@ -100,7 +105,7 @@ function update(dt) {
 
 }
 
-function draw(ctx) {
+function drawGame(ctx) {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
