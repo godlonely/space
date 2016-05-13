@@ -6,12 +6,17 @@ class MenuScene extends Scene {
 		super();
 		this._gameContext = gameContext;
 		this._input = gameContext.input;
+		this._done = false;
 	}
 
 	update(dt) {
+		if (this._done) {
+			return;
+		}
+
 		if (this._input.mouseWasClicked()) {
-			// Change the scene ?
-			console.log('I need to pass control to the next scene!!!!');
+			this._done = true;
+			this.emit('done');
 		}
 	}
 

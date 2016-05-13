@@ -1,8 +1,9 @@
 "use strict";
 
-class GameObject {
+class GameObject extends EventEmitter {
 
     constructor(x, y) {
+		super();
         this._x = x;
         this._y = y;
 		this._width = 0;
