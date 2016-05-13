@@ -1,8 +1,5 @@
 "use strict";
 
-/**
- * TODO: write detach method
- */
 class InputHandler {
 
 	constructor(el) {
@@ -12,14 +9,17 @@ class InputHandler {
 		this._mouseX = 0;
 		this._mouseY = 0;
 
-		el.addEventListener('mousemove', (e) => {
+		this._onMouseMove = (e) => {
 			this._mouseX = e.layerX;
 			this._mouseY = e.layerY;
-		});
+		};
 
-		el.addEventListener('mousedown', () => {
+		this._onMouseDown = (e) => {
 			this._mouseClicked = true;
-		});
+		};
+
+		el.addEventListener('mousemove', this._onMouseMove);
+		el.addEventListener('mousedown', this._onMouseDown);
 	}
 
 	mouseWasClicked() {
@@ -37,4 +37,8 @@ class InputHandler {
 		this._mouseClicked = false;
 	}
 
+	detach() {
+		this._el.removeEventListener('mousemove', this._onMouseMove);
+		this._el.removeEventListener('mousedown', this._onMouseDown);
+	}
 }

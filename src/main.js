@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
@@ -8,7 +8,6 @@ let input = new InputHandler(canvas);
 let lastFrameTime;
 
 let rm = new ResourceManager();
-
 let currentScene = new MenuScene(getGameContext());
 
 currentScene.on('done', () => {
