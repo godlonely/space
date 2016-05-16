@@ -15,6 +15,9 @@ class GameScene extends Scene {
 		this._lastSpawnTime = Date.now();
 		this._nextEnemyDelay = 0;
 
+		this._playerLives = 2;
+		this._playerScore = 0;
+
 		this._player = new Player(rm.getResource('player'));
 		console.log(`${this._player.getName()} is ready for battle!!!`);
 		this._player.setPivot(0.5, 0.5);
@@ -79,7 +82,12 @@ class GameScene extends Scene {
 			});
 
 			if (GameMath.spritesIntersect(enemy, this._player)) {
-				this.emit('lose');
+				enemiesToBeDestroyed.push(enemy);
+				this._playerLives--;
+
+				if (this._playerLives <= 0) {
+					this.emit('lose');
+				}
 			}
 		});
 
@@ -94,7 +102,11 @@ class GameScene extends Scene {
 			this._enemies.splice(pos, 1);
 		}
 
-		this.emit('win');
+		this._playerScore += 5;
+
+		if (this._playerScore >= 20) {
+			this.emit('win');
+		}
 	}
 
 	_destroyLaser(laser) {
@@ -115,6 +127,17 @@ class GameScene extends Scene {
 		});
 
 		this._player.draw(ctx);
+
+		this._drawHud(ctx);
+
+	}
+
+	_drawHud(ctx) {
+		ctx.fillStyle = 'white';
+		ctx.font = "15px sans-serif";
+
+		ctx.fillText(`Lives: ${this._playerLives}`, 20, 30);
+		ctx.fillText(`Score: ${this._playerScore}`, 80, 30);
 	}
 
 	_spawnEnemy() {
