@@ -9,6 +9,8 @@ class Sprite extends GameObject {
     }
 
     draw(ctx) {
+        ctx.strokeStyle = 'darkgreen';
+		ctx.strokeRect(this._x, this._y, this._width, this._height);
         ctx.drawImage(this._img, this._x, this._y);
     }
 }

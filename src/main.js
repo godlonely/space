@@ -8,10 +8,26 @@ let input = new InputHandler(canvas);
 let lastFrameTime;
 
 let rm = new ResourceManager();
-let currentScene = new MenuScene(getGameContext());
 
-currentScene.on('done', () => {
-	currentScene = new GameScene(getGameContext());
+let menuScene = new TitleScene(getGameContext(), 'Space Shooter');
+let winScene = new TitleScene(getGameContext(), 'You Win!');
+
+let loseScene = new TitleScene(getGameContext(), 'You Lose!');
+
+let currentScene = menuScene;
+
+menuScene.on('done', () => {
+	let gameScene = new GameScene(getGameContext());
+
+	gameScene.on('win', () => {
+		currentScene = winScene;
+	});
+
+	gameScene.on('lose', () => {
+		currentScene = loseScene;
+	});
+
+	currentScene = gameScene;
 });
 
 function init() {

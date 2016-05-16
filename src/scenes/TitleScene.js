@@ -1,12 +1,13 @@
 'use strict';
 
-class MenuScene extends Scene {
+class TitleScene extends Scene {
 
-	constructor(gameContext) {
+	constructor(gameContext, title) {
 		super();
 		this._gameContext = gameContext;
 		this._input = gameContext.input;
 		this._done = false;
+		this._title = title;
 	}
 
 	update(dt) {
@@ -23,6 +24,6 @@ class MenuScene extends Scene {
 	draw(ctx) {
 		ctx.font = "48px sans-serif";
 		ctx.fillStyle = 'white';
-		ctx.fillText('Space Shooter', 80, 150);
+		ctx.fillText(this._title, 80, 150);
 	}
 }

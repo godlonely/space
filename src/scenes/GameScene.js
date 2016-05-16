@@ -53,12 +53,56 @@ class GameScene extends Scene {
 			enemy.move(0, enemySpeed*dt);
 		});
 
+		this._checkCollisions();
+
 		if (Date.now() - this._lastSpawnTime > this._nextEnemyDelay) {
 			this._lastSpawnTime = Date.now();
 			this._nextEnemyDelay = 1000 + Math.random()*1000;
 			this._spawnEnemy();
 		}
+	}
 
+	_checkCollisions() {
+		// N^2
+
+		let enemiesToBeDestroyed = [];
+		let lasersToBeDestroyed = [];
+
+		this._enemies.forEach((enemy) => {
+			this._lasers.forEach((laser) => {
+				let collides = GameMath.spritesIntersect(laser, enemy);
+
+				if (collides) {
+					enemiesToBeDestroyed.push(enemy);
+					lasersToBeDestroyed.push(laser);
+				}
+			});
+
+			if (GameMath.spritesIntersect(enemy, this._player)) {
+				this.emit('lose');
+			}
+		});
+
+		enemiesToBeDestroyed.forEach(this._destroyEnemy.bind(this));
+		lasersToBeDestroyed.forEach(this._destroyLaser.bind(this));
+	}
+
+	_destroyEnemy(enemy) {
+		let pos = this._enemies.indexOf(enemy);
+
+		if (pos > -1) {
+			this._enemies.splice(pos, 1);
+		}
+
+		this.emit('win');
+	}
+
+	_destroyLaser(laser) {
+		let pos = this._lasers.indexOf(laser);
+
+		if (pos > -1) {
+			this._lasers.splice(pos, 1);
+		}
 	}
 
 	draw(ctx) {
