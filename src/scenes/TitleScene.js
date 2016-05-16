@@ -6,15 +6,10 @@ class TitleScene extends Scene {
 		super();
 		this._gameContext = gameContext;
 		this._input = gameContext.input;
-		this._done = false;
 		this._title = title;
 	}
 
 	update(dt) {
-		if (this._done) {
-			return;
-		}
-
 		if (this._input.mouseWasClicked()) {
 			this._done = true;
 			this.emit('done');

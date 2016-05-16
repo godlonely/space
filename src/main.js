@@ -10,9 +10,28 @@ let lastFrameTime;
 let rm = new ResourceManager();
 
 let menuScene = new TitleScene(getGameContext(), 'Space Shooter');
-let winScene = new TitleScene(getGameContext(), 'You Win!');
 
-let loseScene = new TitleScene(getGameContext(), 'You Lose!');
+class WinScene extends TitleScene {
+	constructor(context) {
+		super(context, 'You Win!')
+	}
+}
+
+class LoseScene extends TitleScene {
+	constructor(context) {
+		super(context, 'You Lose!')
+	}
+}
+
+let winScene = new WinScene(getGameContext());
+winScene.on('done', () => {
+	currentScene = menuScene;
+});
+
+let loseScene = new LoseScene(getGameContext());
+loseScene.on('done', () => {
+	currentScene = menuScene;
+});
 
 let currentScene = menuScene;
 
